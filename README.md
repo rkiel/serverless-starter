@@ -25,28 +25,36 @@ PROJ_ROOT=~/projects
 PROJ_NAME=sample-serverless
 ```
 
-Create a sample AWS Node Serverless project
-
-```bash
-npm run aws-node ${PROJ_NAME}
-```
-
-Create project workspace
+Create a project workspace
 
 ```bash
 mkdir -p ${PROJ_ROOT}
 ```
 
-Move serverless to project
+Create a sample AWS Node serverless project
+
+```bash
+npm run aws-node ${PROJ_NAME}
+```
+
+Move serverless project to project workspace
 
 ```bash
 mv ${PROJ_NAME} ${PROJ_ROOT}
 ```
 
-Copy other files
+Copy other files to serverless project
 
 ```bash
 cp .gitignore package*.json ${PROJ_ROOT}/${PROJ_NAME}
+```
+
+#### Working with Sample Serverless Project
+
+Go to new serverless project
+
+```bash
+cd ${PROJ_ROOT}/${PROJ_NAME}
 ```
 
 Install packages
@@ -56,16 +64,16 @@ cd ${PROJ_ROOT}/${PROJ_NAME}
 npm install
 ```
 
+Run hello locally
+
+```bash
+npm run hello
+```
+
 Put project under source control
 
 ```bash
 git init
 git add .
 git commit -m "Initial commit"
-```
-
-Run hello locally
-
-```bash
-npm run hello
 ```
