@@ -34,7 +34,7 @@ mkdir -p ${PROJ_ROOT}
 Create a sample AWS Node serverless project
 
 ```bash
-npm run aws-node ${PROJ_NAME}
+npm run serverless -- create --template aws-nodejs --path ${PROJ_NAME}
 ```
 
 Move serverless project to project workspace
@@ -60,14 +60,13 @@ cd ${PROJ_ROOT}/${PROJ_NAME}
 Install packages
 
 ```bash
-cd ${PROJ_ROOT}/${PROJ_NAME}
 npm install
 ```
 
 Run hello locally
 
 ```bash
-npm run hello
+npm run serverless -- invoke local --function hello
 ```
 
 Put project under source control
