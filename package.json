@@ -7,11 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "serverless": "serverless",
     "sls": "serverless",
-    "create": "serverless create --template aws-nodejs --path"
+    "aws-node": "serverless create --template aws-nodejs --path",
+    "hello": "serverless invoke local --function hello"
   },
-  "keywords": [
-
-  ],
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
