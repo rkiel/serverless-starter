@@ -66,10 +66,10 @@ module Create
       run_command "npm install"
 
       file_path = File.join(options.projects,options.name)
-      run_command "mdir -p #{file_path}"
+      run_command "mkdir -p #{options.projects}"
       run_command "rm -rf #{File.join('.', options.name)}"
       run_command "npm run serverless -- create --template #{options.template} --path #{options.name} "
-      run_command "mv #{options.name} #{options.projects}"
+      run_command "mv ./#{options.name} #{options.projects}"
       Dir.chdir(file_path) do
         run_command "npm init -y"
         run_command "npm install --save serverless"
@@ -78,7 +78,7 @@ module Create
         json['scripts']['serverless'] = 'serverless'
         json['scripts']['sls'] = 'sls'
         File.write("package.json", JSON.pretty_generate(json))
-        
+
         run_command "git init"
         run_command "git add ."
         run_command "git commit -m 'Initial commit'"

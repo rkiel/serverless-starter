@@ -9,75 +9,109 @@ mkdir -p ~/GitHub/rkiel && cd $_
 git clone https://github.com/rkiel/serverless-starter.git
 ```
 
-Install packages
+#### Create a Serverless Framework Project
+
+To create a sample Serverless Framework project, you need to answer two simple questions:
+
+* What is the name of the project?
+* Which directory to put the project?
+
+Let's call our project `sample-serverless` and we'll put the project in the `~/projects` directory. Now we can use the `./bin/create` tool to generate the new project.
 
 ```bash
 cd ~/GitHub/rkiel/serverless-starter
-npm install
+./bin/create -p ~/projects -n sample-serverless
 ```
 
-#### Create a Sample Serverless Project
-
-Define the name of your project
-
-```bash
-PROJ_ROOT=~/projects
-PROJ_NAME=sample-serverless
-```
-
-Create a project workspace
-
-```bash
-mkdir -p ${PROJ_ROOT}
-```
-
-Create a sample AWS Node serverless project
-
-```bash
-npm run serverless -- create --template aws-nodejs --path ${PROJ_NAME}
-```
-
-Move serverless project to project workspace
-
-```bash
-mv ${PROJ_NAME} ${PROJ_ROOT}
-```
-
-Copy other files to serverless project
-
-```bash
-cp .gitignore package*.json ${PROJ_ROOT}/${PROJ_NAME}
-```
-
-#### Working with Sample Serverless Project
-
-Go to new serverless project
-
-```bash
-cd ${PROJ_ROOT}/${PROJ_NAME}
-```
-
-Install packages
+This first thing the tool does, is install NPM packages locally, in the current directory. The only package installed should be the `serverless` framework itself.
 
 ```bash
 npm install
 ```
 
-Run hello locally
+The tool then does some directory management. It creates the project directory `~/projects` if it does not already exist and it removes the project `sample-serverless` from the current directory, if for some reason it already exists.
 
 ```bash
-npm run serverless -- invoke local --function hello
+mkdir -p ~/projects
+rm -rf ./sample-serverless
 ```
 
-Put project under source control
+With the `serverless` framework installed, the tool uses the `serverless create` command to create a new project.
+
+```bash
+npm run serverless -- create --template aws-nodejs --path sample-serverless
+```
+
+The `serverless create` command creates the project locally, in the current directory.
+
+```text
+Serverless: Generating boilerplate...
+Serverless: Generating boilerplate in "~/GitHub/rkiel/serverless-starter/sample-serverless"
+ _______                             __
+|   _   .-----.----.--.--.-----.----|  .-----.-----.-----.
+|   |___|  -__|   _|  |  |  -__|   _|  |  -__|__ --|__ --|
+|____   |_____|__|  \___/|_____|__| |__|_____|_____|_____|
+|   |   |             The Serverless Application Framework
+|       |                           serverless.com, v1.32.0
+ -------'
+
+Serverless: Successfully generated boilerplate for template: "aws-nodejs"
+```
+
+I'm not aware of a way for the command to create the project in some directory other than the current. But that's okay, the tool will just move it to our project directory.
+
+```bash
+mv ./sample-serverless ~/projects
+```
+
+For the remainder of our Serverless Framework project creation, the tool will operate inside the new project directory.
+
+```bash
+cd ~/projects/sample-serverless
+```
+
+The `serverless create` command only generates two files: `serverless.yml` and `handler.js`. Not enought to make it a standalone project. So the tool does a few things to bootstrap our project. First, initialize our project as a Node.js project by creating a `package.json` file.
+
+```bash
+npm init -y
+```
+
+Second, the tool will install the `serverless`.framework.
+
+```bash
+npm install --save serverless
+```
+
+And finally, the tool initializes our project as `git` repository.
 
 ```bash
 git init
 git add .
-git commit -m "Initial commit"
+git commit -m 'Initial commit'
 ```
 
-#### Core Concepts ([Notes from serverless.com](https://serverless.com/framework/docs/providers/aws/guide/intro/))
+We now have a sample Serverless Framework project.
+
+#### Run a Sample Function
+
+As mentioned previously, the `serverless create` command generates a `handler.js` which is a simple Hello World function. We can verify that our sample project is working by invoking that function.
+
+```bash
+cd ~/projects/sample-serverless
+
+npm run serverless -- invoke local --function hello
+```
+
+You should see something like the following.
+
+```json
+{
+  "statusCode": 200,
+  "body": "{\"message\":\"Go Serverless v1.0! Your function executed successfully!\",\"input\":\"\"}"
+}
+```
+
+### Core Concepts ([Notes from serverless.com](https://serverless.com/framework/docs/providers/aws/guide/intro/))
 
 1.  A **Function** is an AWS Lambda function. It's an independent unit of deployment, like a microservice.
 1.  Anything that triggers an AWS Lambda Function to execute is regarded by the Framework as an **Event**.
@@ -85,7 +119,7 @@ git commit -m "Initial commit"
 1.  A **Service** is the Framework's unit of organization. You can think of it as a project file, though you can have multiple services for a single application. It's where you define your Functions, the Events that trigger them, and the Resources your Functions use, all in one file
 1.  You can overwrite or extend the functionality of the Framework using **Plugins**.
 
-#### Services ([Notes from serverless.com](https://serverless.com/framework/docs/providers/aws/guide/services/))
+### Services ([Notes from serverless.com](https://serverless.com/framework/docs/providers/aws/guide/services/))
 
 * A service is like a project. It's where you define your AWS Lambda Functions, the events that trigger them and any AWS infrastructure resources they require, all in a file called serverless.yml.
 * In the beginning of an application, many people use a single Service to define all of the Functions, Events and Resources for that project.
@@ -93,7 +127,7 @@ git commit -m "Initial commit"
 * Note: Currently, every service will create a separate REST API on AWS API Gateway. Due to a limitation with AWS API Gateway, you can only have a custom domain per one REST API. If you plan on making a large REST API, please make note of this limitation.
 * `serverless create --template aws-nodejs --path myService`
 
-#### Variables ([Notes from serverless.com](https://serverless.com/framework/docs/providers/aws/guide/variables/))
+### Variables ([Notes from serverless.com](https://serverless.com/framework/docs/providers/aws/guide/variables/))
 
 * Variables allow users to dynamically replace config values in serverless.yml config.
 * To use variables, you will need to reference values enclosed in ${} brackets.
@@ -122,7 +156,7 @@ git commit -m "Initial commit"
   * `Resources: $${file(cloudformation-resources.json)}`
   * `- ${file(resources/first-cf-resources.yml)}`
 
-#### Resources ([Notes from serverless.com](https://serverless.com/framework/docs/providers/aws/guide/resources/))
+### Resources ([Notes from serverless.com](https://serverless.com/framework/docs/providers/aws/guide/resources/))
 
 * Every stage you deploy to with serverless.yml using the aws provider is a single AWS CloudFormation stack.
 * Define your AWS resources in a property titled `resources`. What goes in this property is raw CloudFormation template syntax
