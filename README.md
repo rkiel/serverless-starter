@@ -20,6 +20,7 @@ Let's call our project `sample-serverless` and we'll put the project in the `~/p
 
 ```bash
 cd ~/GitHub/rkiel/serverless-starter
+
 ./bin/create -p ~/projects -n sample-serverless
 ```
 
@@ -29,7 +30,7 @@ This first thing the tool does, is install NPM packages locally, in the current 
 npm install
 ```
 
-The tool then does some directory management. It creates the project directory `~/projects` if it does not already exist and it removes the project `sample-serverless` from the current directory, if for some reason it already exists.
+The tool then does some directory management. It creates the project directory `~/projects`, if it does not already exist, and it removes the project `sample-serverless` from the current directory, if for some reason it already exists.
 
 ```bash
 mkdir -p ~/projects
@@ -76,7 +77,7 @@ The `serverless create` command only generates two files: `serverless.yml` and `
 npm init -y
 ```
 
-Second, the tool will install the `serverless`.framework.
+Second, the tool will install the `serverless`.framework locally.
 
 ```bash
 npm install --save serverless
